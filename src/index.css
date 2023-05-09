@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    
+    html {
+        box-sizing: border-box;
+        font-family: Maven Pro, system-ui, sans-serif;
+    }
+    a{ 
+        color:inherit;
+        text-decoration:none;
+    }
+    input,
+    button{
+        &:focus,
+        &:active{outline:none}
+    }
+  }
