@@ -22,9 +22,30 @@ const Container = styled.input`
 `;
 
 interface InputProps {
-    placeholder: string;
+    placeholder?: string;
+    type?: string;
+    required?: boolean;
+    value?: string;
+    name?: string;
+    handleChange: any;
+    className?: string;
   }
 
-const Input: React.FC<InputProps> = ({ placeholder }) => <Container placeholder={placeholder} />;
+const Input: React.FC<InputProps> = ({
+  placeholder = "",
+  type = "text",
+  required = true,
+  value,
+  name,
+  handleChange,
+  className
+}) => <Container type={type}
+required={required}
+value={value}
+placeholder={placeholder} 
+name={name} 
+onChange={handleChange}
+className={className}
+/>;
 
 export default Input;

@@ -5,6 +5,8 @@ import { ApolloProvider } from '@apollo/client';
 import client from './apollo.ts';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 
 
@@ -25,11 +27,11 @@ import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <BrowserRouter>
-    <React.StrictMode>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </React.StrictMode>
+    <ApolloProvider client={client}>
+      <App />
+     
+    </ApolloProvider>
+    <ToastContainer draggable={true} position={"bottom-center"}/>
   </BrowserRouter>
   
 )

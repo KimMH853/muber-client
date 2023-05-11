@@ -31,7 +31,7 @@ const LoggedOutRoutes = () =>{
         <Routes>
             <Route path="/"  element={<Login/>}/>
             <Route path='/phone-login' element={<PhoneLogin/>} />
-            <Route path='/verify-phone/:number' element={<VerifyPhone/>}/>
+            <Route path='/verify-phone' element={<VerifyPhone/>}/>
             <Route path='/social-login' element={<SocialLogin/>}/>
             <Route path="/*" element={<Navigate to="/" />} />
         </Routes>

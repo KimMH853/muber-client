@@ -1,5 +1,6 @@
 import React from 'react';
 import Helmet from "react-helmet";
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     return (
@@ -13,20 +14,25 @@ const Login = () => {
                 </div>
             </header>
             <footer>
-                <div className='p-5'>
-                    <h2 className='text-[30px]'>Get moving with Muber</h2>
-                    <div className='my-12 text-[25px] font-light'>
-                        🇰🇷 +82 
-                        <span className='ml-[10px] text-[#7f8c8d]'>
-                            Enter your   mobile number
-                        </span>
+                <Link to={"/phone-login"}>
+                    <div className='p-5'>
+                        <h2 className='text-[30px]'>Get moving with Muber</h2>
+                        <div className='my-12 text-[25px] font-light'>
+                            🇰🇷 +82 
+                            <span className='ml-[10px] text-[#7f8c8d]'>
+                                Enter your   mobile number
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </Link>
+                <Link to={'/social-login'}>
                 <div className='border-t border-[#7f8c8d] px-[30px] py-[20px]'>
                     <span className='text-[20px] text-[#3498db]'>
                         Or connect with social
                     </span>
                 </div>
+                </Link>
+                
             </footer>
         </div>
     );
