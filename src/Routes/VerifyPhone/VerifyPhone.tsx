@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import VerifyPhonePresenter from './VerifyPhonePresenter';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { VERIFY_PHONE } from './VerifyPhoneQueries';
 import { VerifyPhoneMutation } from '../../types/graphql';
 import { toast } from 'react-toastify';
-
-interface IState {
-    verifyKey: string;
-    phoneNumber: string;
-  }
-  
+import { isLoggedInVar } from '../../apollo';
 
 
-const VerifyPhone: React.FC<IState> = () => {
+
+const VerifyPhone: React.FC = () => {
     const [verifyKey, setVerifyKey] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const location = useLocation();
-
+    const navigate = useNavigate();
     useEffect(()=>{
         if(location.state) {
             setPhoneNumber(location.state.phoneNumber);
@@ -27,9 +23,10 @@ const VerifyPhone: React.FC<IState> = () => {
     const[verifyPhone] = useMutation<VerifyPhoneMutation>(VERIFY_PHONE, {
         onCompleted(data) {
             const {CompletePhoneVerification} = data;
-            console.log(data)
-            if(CompletePhoneVerification.ok) {
-                toast.success("됐다")
+            if(CompletePhoneVerification.token) {
+                localStorage.setItem("token", CompletePhoneVerification.token);
+                isLoggedInVar(true);
+                navigate("/");
             }else {
                 toast.error(CompletePhoneVerification.error)
             }
@@ -37,14 +34,12 @@ const VerifyPhone: React.FC<IState> = () => {
     })
     const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) =>{
 
-        console.log(event);
         const value = event.target.value;
         setVerifyKey(value);
     }
 
     const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        console.log(event)
         verifyPhone({ variables: { phoneNumber: phoneNumber, key: verifyKey } });
     }
 

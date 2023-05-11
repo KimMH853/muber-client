@@ -1,31 +1,22 @@
-import React from 'react';
-import PropTypes from "prop-types";
+import { useReactiveVar } from '@apollo/client';
+import { isLoggedInVar } from './apollo';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import PhoneLogin from '../../Routes/PhoneLogin/PhoneLogin';
-import VerifyPhone from '../../Routes/VerifyPhone/VerifyPhone';
-import SocialLogin from '../../Routes/SocialLogin/SocialLogin';
-import Home from '../../Routes/Home/Home';
-import Ride from '../../Routes/Ride/Ride';
-import EditAccount from '../../Routes/EditAccount/EditAccount';
-import Settings from '../../Routes/Settings/Settings';
-import Places from '../../Routes/Places/Places';
-import AddPlace from '../../Routes/AddPlace/AddPlace';
-import FindAddress from '../../Routes/FindAddress/FindAddress';
-import Login from '../../Routes/Login/Login';
+import PhoneLogin from './Routes/PhoneLogin/PhoneLogin';
+import VerifyPhone from './Routes/VerifyPhone/VerifyPhone';
+import SocialLogin from './Routes/SocialLogin/SocialLogin';
+import Home from './Routes/Home/Home';
+import Ride from './Routes/Ride/Ride';
+import EditAccount from './Routes/EditAccount/EditAccount';
+import Settings from './Routes/Settings/Settings';
+import Places from './Routes/Places/Places';
+import AddPlace from './Routes/AddPlace/AddPlace';
+import FindAddress from './Routes/FindAddress/FindAddress';
+import Login from './Routes/Login/Login';
 
-
-interface IProps {
-    isLoggedIn: boolean;
-}
-
-const AppPresenter: React.FC<IProps> = ({isLoggedIn}) => {
-    return (
-        <div>{isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />}</div> 
-    )
-} 
-   
-;
-
+const App = () => {
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
+    return  <div>{isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />}</div> 
+};
 const LoggedOutRoutes = () =>{
     return (
         <Routes>
@@ -54,8 +45,4 @@ const LoggedInRoutes = () =>{
     )
     
 }
-AppPresenter.propTypes = {
-    isLoggedIn: PropTypes.bool.isRequired
-}
-
-export default AppPresenter;
+export default App;
