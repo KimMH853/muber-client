@@ -13,6 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  mutation toggleDriving {\n    ToggleDrivingMode {\n      ok\n      error\n    }\n  }\n": types.ToggleDrivingDocument,
     "\n    mutation startPhoneVerification($phoneNumber: String!) {\n        StartPhoneVerification(phoneNumber: $phoneNumber) {\n            ok\n            error\n        }\n    }\n": types.StartPhoneVerificationDocument,
     "\n    mutation verifyPhone($key: String!, $phoneNumber: String!) {\n        CompletePhoneVerification(key: $key, phoneNumber: $phoneNumber) {\n            ok\n            error\n            token\n        }\n    }\n": types.VerifyPhoneDocument,
     "\n    query userProfile {\n        GetMyProfile {\n            ok\n            error\n            user {\n                profilePhoto\n                fullName\n                isDriving\n            }\n        }\n    }\n": types.UserProfileDocument,
@@ -32,6 +33,10 @@ const documents = {
  */
 export function gql(source: string): unknown;
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation toggleDriving {\n    ToggleDrivingMode {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation toggleDriving {\n    ToggleDrivingMode {\n      ok\n      error\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

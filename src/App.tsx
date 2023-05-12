@@ -1,4 +1,4 @@
-import { useReactiveVar } from '@apollo/client';
+import { makeVar, useReactiveVar } from '@apollo/client';
 import { isLoggedInVar } from './apollo';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import PhoneLogin from './Routes/PhoneLogin/PhoneLogin';
@@ -15,6 +15,8 @@ import Login from './Routes/Login/Login';
 
 const App = () => {
     const isLoggedIn = useReactiveVar(isLoggedInVar)
+    const token = useReactiveVar(makeVar(localStorage.getItem('token'))) 
+    console.log(token)
     return  <div>{isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />}</div> 
 };
 const LoggedOutRoutes = () =>{

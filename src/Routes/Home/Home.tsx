@@ -1,39 +1,42 @@
-import React, {  useEffect, useState } from 'react';
+import React, {  useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Sidebar from 'react-sidebar';
 import { styled } from 'styled-components';
-import Menu from '../../Components/Menu';
+import Menu from '../../Components/Menu/Menu';
 import { useQuery } from '@apollo/client';
 import { USER_PROFILE } from '../../sharedQueries';
-import {  UserProfileQuery } from '../../types/graphql';
+import { UserProfileQuery } from '../../types/graphql';
 const Container = styled.div``;
 
 
 
 const Home:React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [profile, setProfile] = useState<object | undefined>();
-    const res =useQuery<UserProfileQuery>(USER_PROFILE);
+    const [userData, setUserData] = useState<UserProfileQuery>();
+    const {data, loading} =useQuery<UserProfileQuery>(USER_PROFILE);
     
-    useEffect(()=>{
-        if(res.data?.GetMyProfile.user){
-            setProfile(res.data?.GetMyProfile.user)
+    const userDataFn = useCallback(() => {
+        if (data) {
+          setUserData(data);
         }
-    },[res.data?.GetMyProfile.user])
-   
+        
+      }, [data]);
+      
+      useEffect(() => {
+        userDataFn();
+      }, [userDataFn]);
+
     const toggleMenu = () =>{
         setIsMenuOpen((prev)=>!prev);
-
-        
     }
-    
+
     return (
         <Container>
             <Helmet>
                 <title>Home | Number</title>
             </Helmet>
             <Sidebar
-            sidebar={<Menu profile={profile}/>}
+            sidebar={<Menu userData={userData} loading={loading}/>}
             open={isMenuOpen}
             onSetOpen={toggleMenu}
             styles={{
