@@ -1,14 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer } from '@react-google-maps/api';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Sidebar from 'react-sidebar';
+import { toast } from 'react-toastify';
 import { styled } from 'styled-components';
-import Menu from '../../Components/Menu/Menu';
-import { useMutation, useQuery, useSubscription } from '@apollo/client';
+
+import { UserProfileQuery, GetDriversQuery, GetRidesQuery } from '../../types/graphql';
 import { USER_PROFILE } from '../../sharedQueries';
-import { UserProfileQuery, GetDriversQuery, GetRidesQueryVariables, AcceptRideMutation } from '../../types/graphql';
-import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer } from '@react-google-maps/api';
+import Menu from '../../Components/Menu/Menu';
 import Button from '../../Components/Button/Button';
+import RidePopUp from '../../Components/RidePopUp/RidePopUp';
 import geoCode from '../../util/geoCode';
+import reverseGeo from '../../util/reverseGeo';
 import {
     ACCEPT_RIDE,
     GET_DRIVERS,
@@ -17,11 +22,8 @@ import {
     REQUEST_RIDE,
     SUBSCRIBE_NEARBY_RIDES,
 } from './HomeQueries';
-import reverseGeo from '../../util/reverseGeo';
-import { GetRidesQuery } from '../../types/graphql';
-import { toast } from 'react-toastify';
-import RidePopUp from '../../Components/RidePopUp/RidePopUp';
-import { useNavigate } from 'react-router-dom';
+
+
 
 const Container = styled.div`
     position: absolute;
@@ -115,15 +117,8 @@ const Home: React.FC = () => {
     const [userData, setUserData] = useState<UserProfileQuery>();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [currentLocation, setCurrentLocation] = useState<Location>({
-        lat: 0,
-        lng: 0,
-    });
-    const [toAddress, setToAddress] = useState<Location>({
-        lat: 0,
-        lng: 0,
-        address: '',
-    });
+    const [currentLocation, setCurrentLocation] = useState<Location>({lat: 0,lng: 0,});
+    const [toAddress, setToAddress] = useState<Location>({lat: 0, lng: 0, address: '',});
     const [toMarkerOption, setToMarkerOption] = useState<Option>();
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
     const [routeInfo, setRouteInfo] = useState<Info>();
@@ -149,30 +144,44 @@ const Home: React.FC = () => {
         duration: '',
     });
 
+
     const navigate = useNavigate();
 
+
     const { data, loading } = useQuery<UserProfileQuery>(USER_PROFILE, {
-        onCompleted: data => handleProfileQuery(data),
+        onCompleted: data => userProfileAfterQuery(data),
     });
+    
     const { data: driverData } = useQuery<GetDriversQuery>(GET_DRIVERS, {
         pollInterval: 2000,
         skip: data?.GetMyProfile?.user?.isDriving ?? true,
         onCompleted: () => {
-            handleNearbyDrivers();
+            getDriversAfterQuery();
         },
     });
+
     const { data: getRidesData, subscribeToMore } = useQuery<GetRidesQuery>(GET_NEARBY_RIDE, {
         skip: !userData?.GetMyProfile.user?.isDriving,
-        onCompleted: getRidesData => handleSetRide(getRidesData),
+        onCompleted: getRidesData => getRideAfterQuery(getRidesData),
     });
+
+
     const [ReportMovement] = useMutation(REPORT_LOCATION);
+
     const [RequestRide] = useMutation(REQUEST_RIDE, {
-        onCompleted: data => showRequest(data),
+        onCompleted: data => showRequestAfterMutation(data),
     });
+
     const [UpdateRideStatus] = useMutation(ACCEPT_RIDE, {
         onCompleted: data => {
-            handleRideAcceptance(data);
+            rideAcceptanceAfterMutation(data);
         },
+    })
+
+
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,  
     });
 
     const userDataFn = useCallback(() => {
@@ -181,14 +190,11 @@ const Home: React.FC = () => {
         }
     }, [data]);
 
+
+
     useEffect(() => {
         userDataFn();
     }, [userDataFn]);
-
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: '',  
-    });
 
     useEffect(() => {
         const successCallback = async (position: GeolocationPosition) => {
@@ -221,45 +227,11 @@ const Home: React.FC = () => {
         navigator.geolocation.watchPosition(successCallback, errorCallback, options);
     }, [ReportMovement]);
 
-    const setPickupAddress = async () => {
-        const address = await reverseGeo(currentLocation.lat, currentLocation.lng, isLoaded);
-        console.log(address);
-        if (address) {
-            setRideRequest(prev => ({
-                ...prev,
-                pickUpAddress: address,
-                pickUpLat: currentLocation.lat,
-                pickUpLng: currentLocation.lng,
-            }));
-        }
-    };
-
     useEffect(() => {
         const unsubscribe = subscribeToMore(rideSubscriptionOptions);
         return () => unsubscribe();
     }, [subscribeToMore]);
 
-    const rideSubscriptionOptions = {
-        document: SUBSCRIBE_NEARBY_RIDES,
-        updateQuery: (prev: any, { subscriptionData }: any) => {
-            console.log(subscriptionData);
-            if (!subscriptionData.data) {
-                return prev;
-            }
-            const newObject = {
-                ...prev,
-                GetNearbyRide: {
-                    ...prev.GetNearbyRide,
-                    ride: subscriptionData.data.NearbyRideSubscription,
-                },
-            };
-            return newObject;
-        },
-    };
-
-    const toggleMenu = () => {
-        setIsMenuOpen(prev => !prev);
-    };
 
     const onLoad = React.useCallback(
         function callback(map: any) {
@@ -281,43 +253,108 @@ const Home: React.FC = () => {
         setMap(null);
     }, []);
 
-    const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {
-            target: { value },
-        } = event;
-        setToAddress(prev => ({ ...prev, address: value }));
+    
+
+    const userProfileAfterQuery = (data: UserProfileQuery) => {
+        // const { GetMyProfile } = data;
+        // if (GetMyProfile.user) {
+        //   const {
+        //     user: { isDriving }
+        //   } = GetMyProfile;
+        //   setUserData(prev => {
+        //     return {
+        //       ...prev,
+        //       GetMyProfile: {
+        //         ...prev?.GetMyProfile,
+        //         isDriving
+        //       }
+        //     };
+        //   });
+        // }
+        return;
     };
 
-    const onAddressSubmit: React.MouseEventHandler<HTMLButtonElement> = async event => {
-        if (toAddress.address) {
-            const result = await geoCode(toAddress.address);
-            if (result) {
-                setToAddress(result);
-                setToMarkerOption({ position: { lat: result.lat, lng: result.lng } });
-                setRideRequest(prev => ({
-                    ...prev,
-                    dropOffLat: result.lat,
-                    dropOffLng: result.lng,
-                    dropOffAddress: result.address,
+    const getDriversAfterQuery = () => {
+        if (driverData && driverData.GetNearbyDrivers) {
+            const { drivers } = driverData.GetNearbyDrivers;
+            if (drivers) {
+                const newDriverMarkers = drivers.map(driver => ({
+                    id: driver!.id,
+                    lat: driver!.lastLat ?? 0,
+                    lng: driver!.lastLng ?? 0,
                 }));
-
-                const bounds = new window.google.maps.LatLngBounds();
-                bounds.extend({ lat: result.lat, lng: result.lng });
-                bounds.extend(currentLocation);
-                if (map) {
-                    map.fitBounds(bounds);
-                }
-
-                const directionsService = new window.google.maps.DirectionsService();
-                directionsService.route(
-                    {
-                        origin: currentLocation,
-                        destination: { lat: result.lat, lng: result.lng },
-                        travelMode: window.google.maps.TravelMode.DRIVING,
-                    },
-                    directionsCallback
-                );
+                setDriverMarkers(newDriverMarkers);
             }
+        }
+    };
+
+    const getRideAfterQuery = (getRidesData: GetRidesQuery) => {
+        console.log(getRidesData);
+        const {
+            GetNearbyRide: { ride },
+        } = getRidesData;
+        if (ride) {
+            setRide({
+                pickUpAddress: ride.pickUpAddress,
+                dropOffAddress: ride.dropOffAddress,
+                price: ride.price,
+                distance: ride.distance,
+                passengerName: ride.passenger.fullName || '풀네임?',
+                passengerPhoto: ride.passenger.profilePhoto || '',
+                id: ride.id,
+            });
+        }
+    };
+
+    const showRequestAfterMutation = (data: any) => {
+        const { RequestRide } = data;
+        if (RequestRide.ok) {
+            toast.success('Drive requested, finding a driver');
+            navigate(`/ride/${RequestRide.ride.id}`);
+            console.log(RequestRide.ride.id);
+        } else {
+            toast.error(RequestRide.error);
+        }
+    };
+
+    const rideAcceptanceAfterMutation = (data: any) => {
+        console.log('UpdateRideStatus 온컴플리트');
+        const { UpdateRideStatus } = data;
+        if (UpdateRideStatus && UpdateRideStatus.ok) {
+            navigate(`/ride/${UpdateRideStatus.rideId}`);
+        }
+        console.log(UpdateRideStatus.rideId);
+    };
+
+    const rideSubscriptionOptions = {
+        document: SUBSCRIBE_NEARBY_RIDES,
+        updateQuery: (prev: any, { subscriptionData }: any) => {
+            console.log(subscriptionData);
+            if (!subscriptionData.data) {
+                return prev;
+            }
+            const newObject = {
+                ...prev,
+                GetNearbyRide: {
+                    ...prev.GetNearbyRide,
+                    ride: subscriptionData.data.NearbyRideSubscription,
+                },
+            };
+            return newObject;
+        },
+    };
+
+
+
+    const setPickupAddress = async () => {
+        const address = await reverseGeo(currentLocation.lat, currentLocation.lng);
+        if (address) {
+            setRideRequest(prev => ({
+                ...prev,
+                pickUpAddress: address,
+                pickUpLat: currentLocation.lat,
+                pickUpLng: currentLocation.lng,
+            }));
         }
     };
 
@@ -354,21 +391,9 @@ const Home: React.FC = () => {
         }
     };
 
-    const handleNearbyDrivers = () => {
-        if (driverData && driverData.GetNearbyDrivers) {
-            const { drivers } = driverData.GetNearbyDrivers;
-            if (drivers) {
-                const newDriverMarkers = drivers.map(driver => ({
-                    id: driver!.id,
-                    lat: driver!.lastLat ?? 0,
-                    lng: driver!.lastLng ?? 0,
-                }));
-                setDriverMarkers(newDriverMarkers);
-            }
-        }
-    };
 
-    const handleRequestRide = () => {
+
+    const handleRequestRide: React.MouseEventHandler<HTMLButtonElement> = () => {
         RequestRide({
             variables: {
                 pickUpAddress: rideRequest.pickUpAddress,
@@ -383,65 +408,53 @@ const Home: React.FC = () => {
             },
         });
     };
-    const handleProfileQuery = (data: UserProfileQuery) => {
-        // const { GetMyProfile } = data;
-        // if (GetMyProfile.user) {
-        //   const {
-        //     user: { isDriving }
-        //   } = GetMyProfile;
-        //   setUserData(prev => {
-        //     return {
-        //       ...prev,
-        //       GetMyProfile: {
-        //         ...prev?.GetMyProfile,
-        //         isDriving
-        //       }
-        //     };
-        //   });
-        // }
-        return;
-    };
 
-    const showRequest = (data: any) => {
-        const { RequestRide } = data;
-        if (RequestRide.ok) {
-            toast.success('Drive requested, finding a driver');
-            navigate(`/ride/${RequestRide.ride.id}`);
-            console.log(RequestRide.ride.id);
-        } else {
-            toast.error(RequestRide.error);
-        }
-    };
-
-    const handleSetRide = (getRidesData: GetRidesQuery) => {
-        console.log(getRidesData);
-        const {
-            GetNearbyRide: { ride },
-        } = getRidesData;
-        if (ride) {
-            setRide({
-                pickUpAddress: ride.pickUpAddress,
-                dropOffAddress: ride.dropOffAddress,
-                price: ride.price,
-                distance: ride.distance,
-                passengerName: ride.passenger.fullName || '풀네임?',
-                passengerPhoto: ride.passenger.profilePhoto || '',
-                id: ride.id,
-            });
-        }
-    };
-
-    const acceptRideFn = () => {
+    const handledAcceptRide: React.MouseEventHandler<HTMLButtonElement> = () => {
         UpdateRideStatus({ variables: { rideId: ride.id, status: 'ACCEPTED' } });
     };
 
-    const handleRideAcceptance = (data: any) => {
-        console.log('UpdateRideStatus 온컴플리트');
-        const { UpdateRideStatus } = data;
-        if (UpdateRideStatus && UpdateRideStatus.ok) {
-            navigate(`/ride/${UpdateRideStatus.rideId}`);
+    const handleAddressSubmit: React.MouseEventHandler<HTMLButtonElement> = async() => {
+        if (toAddress.address) {
+            const result = await geoCode(toAddress.address);
+            if (result) {
+                setToAddress(result);
+                setToMarkerOption({ position: { lat: result.lat, lng: result.lng } });
+                setRideRequest(prev => ({
+                    ...prev,
+                    dropOffLat: result.lat,
+                    dropOffLng: result.lng,
+                    dropOffAddress: result.address,
+                }));
+
+                const bounds = new window.google.maps.LatLngBounds();
+                bounds.extend({ lat: result.lat, lng: result.lng });
+                bounds.extend(currentLocation);
+                if (map) {
+                    map.fitBounds(bounds);
+                }
+
+                const directionsService = new window.google.maps.DirectionsService();
+                directionsService.route(
+                    {
+                        origin: currentLocation,
+                        destination: { lat: result.lat, lng: result.lng },
+                        travelMode: window.google.maps.TravelMode.DRIVING,
+                    },
+                    directionsCallback
+                );
+            }
         }
-        console.log(UpdateRideStatus.rideId);
+    };
+
+    const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setToAddress(prev => ({ ...prev, address: value }));
+    };
+
+    const toggleMenu = () => {
+        setIsMenuOpen(prev => !prev);
     };
 
     return isLoaded ? (
@@ -490,7 +503,7 @@ const Home: React.FC = () => {
 
                 {!userData?.GetMyProfile.user?.isDriving && (
                     <>
-                        <AddressInput name={'toAddress'} onChange={onInputChange} value={toAddress.address} />
+                        <AddressInput name={'toAddress'} onChange={handleInputChange} value={toAddress.address} />
                         {routeInfo ? (
                             <RequestButton
                                 onClick={handleRequestRide}
@@ -499,7 +512,7 @@ const Home: React.FC = () => {
                             />
                         ) : null}
                         <ExtendedButton
-                            onClick={onAddressSubmit}
+                            onClick={handleAddressSubmit}
                             disabled={toAddress.address === ''}
                             value={routeInfo ? 'Change address' : 'Pick Address'}
                         ></ExtendedButton>
@@ -515,7 +528,7 @@ const Home: React.FC = () => {
                         distance={ride.distance}
                         passengerName={ride.passengerName}
                         passengerPhoto={ride.passengerPhoto}
-                        acceptRideFn={acceptRideFn}
+                        acceptRideFn={handledAcceptRide}
                     />
                 )}
                 <GoogleMap
