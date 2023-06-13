@@ -1,10 +1,10 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const TOGGLE_DRIVING = gql`
-  mutation toggleDriving {
-    ToggleDrivingMode {
-      ok
-      error
+    mutation toggleDriving {
+        ToggleDrivingMode {
+            ok
+            error
+        }
     }
-  }
 `;

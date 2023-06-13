@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const USER_PROFILE = gql`
     query userProfile {
@@ -6,10 +6,29 @@ export const USER_PROFILE = gql`
             ok
             error
             user {
+                id
+                firstName
+                lastName
+                email
                 profilePhoto
                 fullName
                 isDriving
             }
         }
     }
-`
+`;
+
+export const GET_PLACES = gql`
+    query getPlaces {
+        GetMyPlaces {
+            ok
+            error
+            places {
+                id
+                name
+                address
+                isFav
+            }
+        }
+    }
+`;

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const PHONE_SIGN_IN = gql`
     mutation startPhoneVerification($phoneNumber: String!) {

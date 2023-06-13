@@ -1,5 +1,4 @@
-import { gql } from "@apollo/client";
-
+import { gql } from '@apollo/client';
 
 export const VERIFY_PHONE = gql`
     mutation verifyPhone($key: String!, $phoneNumber: String!) {
@@ -9,4 +8,4 @@ export const VERIFY_PHONE = gql`
             token
         }
     }
-`
+`;

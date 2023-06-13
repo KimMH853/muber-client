@@ -4,18 +4,18 @@ interface IProps {
     submitFn: any;
     className?: string;
     children?: any;
-  }
-  
-  const Form: React.FC<IProps> = ({ submitFn, className, children }) => (
+}
+
+const Form: React.FC<IProps> = ({ submitFn, className, children }) => (
     <form
-      className={className}
-      onSubmit={e => {
-        e.preventDefault();
-        submitFn();
-      }}
+        className={className}
+        onSubmit={e => {
+            e.preventDefault();
+            submitFn();
+        }}
     >
-      {children}
+        {children}
     </form>
-  );
-  
-  export default Form;
+);
+
+export default Form;
