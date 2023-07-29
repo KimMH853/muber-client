@@ -8,25 +8,15 @@
   <img src="https://img.shields.io/badge/-html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> &nbsp
   <img src="https://img.shields.io/badge/-css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"> &nbsp
   <img src="https://img.shields.io/badge/-javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> &nbsp
-  <img src="https://img.shields.io/badge/-react-61DAFB?style=for-the-badge&logo=react&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-react-61DAFB?style=for-the-badge&logo=react&logoColor=white"> &nbsp <hr/>
   <img src="https://img.shields.io/badge/-typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> &nbsp
   <img src="https://img.shields.io/badge/-apollographql-311C87?style=for-the-badge&logo=apollographql&logoColor=white"> &nbsp
   <img src="https://img.shields.io/badge/-vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"> &nbsp
   <img src="https://img.shields.io/badge/-styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white"> &nbsp
 </p>  
-<p align="center">
-    <img src="https://img.shields.io/badge/-Oracle-F80000?style=for-the-badge&logo=Oracle&logoColor=white"> &nbsp
-    <img src="https://img.shields.io/badge/-Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white"> &nbsp
-    <img src="https://img.shields.io/badge/-Spring-006600?style=for-the-badge&logo=Spring&logoColor=white"> &nbsp
-    <img src="https://img.shields.io/badge/-Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white"> &nbsp
-    <img src="https://img.shields.io/badge/-Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> &nbsp
-    <img src="https://img.shields.io/badge/-JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> &nbsp
-    <img src="https://img.shields.io/badge/-Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white"> &nbsp
-    <img src="https://img.shields.io/badge/-Amazon AWS-885630?style=for-the-badge&logo=AmazonAWS&logoColor=white"/> &nbsp
-    <img src="https://img.shields.io/badge/-Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white"> &nbsp
-</p>
+
   
-<br/>
+
 
 ## 구현 화면
 <table>
