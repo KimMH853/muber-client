@@ -1,5 +1,15 @@
 # muber-client 🚖
 
+## 기술 스택
+- HTML/CSS
+- JavaScript (ES6+)
+- React.js 18.2.0
+- TypeScript 5.0.4
+- apollo-client 3.7.14
+- vite 4.3.2
+- styled-components 6.0.0
+
+## 구현 화면
 <table>
   <tr>
     <td align="center">로그인</td>
