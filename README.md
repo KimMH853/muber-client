@@ -1,5 +1,7 @@
 # muber-client 🚖
 
+<br/>
+
 ## 기술 스택
 - HTML/CSS
 - JavaScript (ES6+)
@@ -8,6 +10,8 @@
 - apollo-client 3.7.14
 - vite 4.3.2
 - styled-components 6.0.0
+  
+<br/>
 
 ## 구현 화면
 <table>
