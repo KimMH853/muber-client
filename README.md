@@ -5,14 +5,14 @@
 ## 기술 스택
 
 <p align="center">
-  <img src="https://img.shields.io/badge/-html5-#E34F26?style=for-the-badge&logo=html5&logoColor=white"> &nbsp
-  <img src="https://img.shields.io/badge/-css3-#1572B6?style=for-the-badge&logo=css3&logoColor=white"> &nbsp
-  <img src="https://img.shields.io/badge/-javascript-#F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> &nbsp
-  <img src="https://img.shields.io/badge/-react-#61DAFB?style=for-the-badge&logo=react&logoColor=white"> &nbsp
-  <img src="https://img.shields.io/badge/-typescript-#3178C6?style=for-the-badge&logo=typescript&logoColor=white"> &nbsp
-  <img src="https://img.shields.io/badge/-apollographql-#311C87?style=for-the-badge&logo=apollographql&logoColor=white"> &nbsp
-  <img src="https://img.shields.io/badge/-vite-#646CFF?style=for-the-badge&logo=vite&logoColor=white"> &nbsp
-  <img src="https://img.shields.io/badge/-styledcomponents-#DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-react-61DAFB?style=for-the-badge&logo=react&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-apollographql-311C87?style=for-the-badge&logo=apollographql&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"> &nbsp
+  <img src="https://img.shields.io/badge/-styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white"> &nbsp
 </p>  
 <p align="center">
     <img src="https://img.shields.io/badge/-Oracle-F80000?style=for-the-badge&logo=Oracle&logoColor=white"> &nbsp
