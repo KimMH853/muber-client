@@ -3,6 +3,14 @@
 <br/>
 
 ## 기술 스택
+<img src="https://img.shields.io/badge/#E34F26?style=for-the-badge&logo=html5&logoColor=white"> &nbsp
+<img src="https://img.shields.io/badge/#1572B6-색상?style=for-the-badge&logo=css3&logoColor=white"> &nbsp
+<img src="https://img.shields.io/badge/#F7DF1E-색상?style=for-the-badge&logo=javascript&logoColor=white"> &nbsp
+<img src="https://img.shields.io/badge/#61DAFB-색상?style=for-the-badge&logo=react&logoColor=white"> &nbsp
+<img src="https://img.shields.io/badge/#3178C6-색상?style=for-the-badge&logo=typescript&logoColor=white"> &nbsp
+<img src="https://img.shields.io/badge/#311C87-색상?style=for-the-badge&logo=apollographql&logoColor=white"> &nbsp
+<img src="https://img.shields.io/badge/#646CFF-색상?style=for-the-badge&logo=vite&logoColor=white"> &nbsp
+<img src="https://img.shields.io/badge/#DB7093-색상?style=for-the-badge&logo=styledcomponents&logoColor=white"> &nbsp
 - HTML/CSS
 - JavaScript (ES6+)
 - React.js 18.2.0
