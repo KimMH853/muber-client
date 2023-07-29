@@ -18,9 +18,8 @@
     <td><img src="https://github.com/KimMH853/muber-client/assets/100124429/a195799a-06d1-4b19-bffa-52c2f3c58dd1" alt="ride 요청"></td>
   </tr>
   <tr>
-    <td>
-      채팅
-    </td>
+    <td>채팅</td>
+    <td>&nbsp;</td>
   </tr>
   <tr>
     <td colspan="2"><img src="https://github.com/KimMH853/muber-client/assets/100124429/555372cd-3cca-4e8e-839a-d6ec50076c8b" alt="채팅"></td>
