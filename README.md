@@ -1,9 +1,9 @@
-# muber-client 🚖
+# 🚖muber-client 
 
-<p align="center">간편하게 이용하는 택시 서비스👋</p>
-<p align="center">목적지를 설정하고 택시를 불러보세요🙋</p>
+- 간편하게 이용하는 택시 서비스👋
+- 목적지를 설정하고 택시를 불러보세요🙋
 
-<p align="center">
+<p>
   <img src="https://img.shields.io/badge/-html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> &nbsp
   <img src="https://img.shields.io/badge/-css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"> &nbsp
   <img src="https://img.shields.io/badge/-javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> &nbsp
